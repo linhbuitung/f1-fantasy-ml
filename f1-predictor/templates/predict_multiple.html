@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiple Prediction</title>
+    <script>
+        function addDriverField() {
+            const driverField = document.createElement("div");
+            driverField.innerHTML = `
+                <label for="driver">Driver:</label>
+                <select name="drivers[]" required>
+                    {% for driver in drivers %}
+                        <option value="{{ driver.driver }}">{{ driver.driver }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="constructor">Constructor:</label>
+                <select name="constructors[]" required>
+                    {% for constructor in constructors %}
+                        <option value="{{ constructor.constructor }}">{{ constructor.constructor }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="quali_pos">Qualifying Position:</label>
+                <input type="number" name="quali_pos[]" required><br><br>
+            `;
+            document.getElementById("driversContainer").appendChild(driverField);
+        }
+
+        async function submitForm(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = document.getElementById("predictionForm");
+            const formData = new FormData(form);
+
+            // Extract shared fields
+            const circuit = formData.get("circuit");
+            const date = formData.get("date");
+            const rain = formData.get("rain");
+            const laps = formData.get("laps");
+
+            // Extract driver-specific fields
+            const drivers = formData.getAll("drivers[]");
+            const constructors = formData.getAll("constructors[]");
+            const qualiPositions = formData.getAll("quali_pos[]");
+
+            // Create a list of JSON objects
+            const jsonData = drivers.map((driver, index) => ({
+                circuit: circuit,
+                date: date,
+                rain: rain,
+                laps: laps,
+                driver: driver,
+                constructor: constructors[index],
+                quali_pos: qualiPositions[index]
+            }));
+
+            try {
+                // Make the API call
+                const response = await fetch("/api/predict_multiple", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(jsonData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                // Display the result
+                document.getElementById("result").innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("result").innerText = "An error occurred while making the prediction.";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Multiple Prediction</h1>
+    <form id="predictionForm" onsubmit="submitForm(event)">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br><br>
+
+        <label for="circuit">Circuit:</label>
+        <select id="circuit" name="circuit" required>
+            {% for circuit in circuits %}
+                <option value="{{ circuit.circuit }}">{{ circuit.circuit }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="rain">Rain (Yes/No):</label>
+        <select id="rain" name="rain" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br><br>
+
+        <label for="laps">Laps:</label>
+        <input type="number" id="laps" name="laps" required><br><br>
+
+        <div id="driversContainer">
+            <label for="driver">Driver:</label>
+            <select name="drivers[]" required>
+                {% for driver in drivers %}
+                    <option value="{{ driver.driver }}">{{ driver.driver }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="constructor">Constructor:</label>
+            <select name="constructors[]" required>
+                {% for constructor in constructors %}
+                    <option value="{{ constructor.constructor }}">{{ constructor.constructor }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="quali_pos">Qualifying Position:</label>
+            <input type="number" name="quali_pos[]" required><br><br>
+        </div>
+
+        <button type="button" onclick="addDriverField()">Add Driver</button><br><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    <h2>Prediction Result:</h2>
+    <pre id="result"></pre>
+</body>
+</html>
