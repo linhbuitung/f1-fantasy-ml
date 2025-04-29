@@ -21,7 +21,7 @@ def api_predict():
 
 
     json_ = [process_input_json(json_)]
-
+    print(json_)
     # Convert JSON data into a DataFrame
 
     df = pd.DataFrame(json_)
