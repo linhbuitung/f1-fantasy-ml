@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Single Prediction</title>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = document.getElementById("predictionForm");
+            const formData = new FormData(form);
+
+            // Convert form data to JSON
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            try {
+                // Make the API call
+                const response = await fetch("/api/predict", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(jsonData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                // Display the result
+                document.getElementById("result").innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("result").innerText = "An error occurred while making the prediction.";
+            }
+        }
+    </script>
+<body>
+    <h1>Single Prediction</h1>
+    <form id="predictionForm" onsubmit="submitForm(event)">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br><br>
+
+        <label for="quali_pos">Qualifying Position:</label>
+        <input type="number" id="quali_pos" name="quali_pos" required><br><br>
+
+        <label for="constructor">Constructor:</label>
+        <select id="constructor" name="constructor" required>
+            {% for constructor in constructors %}
+                <option value="{{ constructor.constructor }}">{{ constructor.constructor }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="circuit">Circuit:</label>
+        <select id="circuit" name="circuit" required>
+            {% for circuit in circuits %}
+                <option value="{{ circuit.circuit }}">{{ circuit.circuit }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="driver">Driver:</label>
+        <select id="driver" name="driver" required>
+            {% for driver in drivers %}
+                <option value="{{ driver.driver }}">{{ driver.driver }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="rain">Rain (Yes/No):</label>
+        <select id="rain" name="rain" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br><br>
+
+        <label for="laps">Laps:</label>
+        <input type="number" id="laps" name="laps" required><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <h2>Prediction Result:</h2>
+    <pre id="result"></pre>
+</body>
+</html>
