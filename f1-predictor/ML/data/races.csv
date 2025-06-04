@@ -280,9 +280,7 @@ raceId,year,round,circuitId,name,date,time,url,fp1_date,fp1_time,fp2_date,fp2_ti
 574,1976,15,46,United States Grand Prix,10-10-76,\N,http://en.wikipedia.org/wiki/1976_United_States_Grand_Prix,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,
 575,1976,16,16,Japanese Grand Prix,24-10-76,\N,http://en.wikipedia.org/wiki/1976_Japanese_Grand_Prix,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,
 543,1977,1,25,Argentine Grand Prix,09-01-77,\N,http://en.wikipedia.org/wiki/1977_Argentine_Grand_Prix,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,
-544,1977,2,18,Brazilian Grand Prix,qwf
-
--01-77,\N,http://en.wikipedia.org/wiki/1977_Brazilian_Grand_Prix,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,
+544,1977,2,18,Brazilian Grand Prix,23-01-77,\N,http://en.wikipedia.org/wiki/1977_Brazilian_Grand_Prix,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,
 545,1977,3,30,South African Grand Prix,05-03-77,\N,http://en.wikipedia.org/wiki/1977_South_African_Grand_Prix,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,
 546,1977,4,43,United States Grand Prix West,03-04-77,\N,http://en.wikipedia.org/wiki/1977_United_States_Grand_Prix_West,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,
 547,1977,5,45,Spanish Grand Prix,08-05-77,\N,http://en.wikipedia.org/wiki/1977_Spanish_Grand_Prix,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,
