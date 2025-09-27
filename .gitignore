@@ -1,8 +1,3 @@
-# models
-*.pkl
-**/*.pkl
-f1-predictor/ML/*.pkl
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
